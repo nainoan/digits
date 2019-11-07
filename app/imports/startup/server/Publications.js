@@ -29,9 +29,8 @@ Meteor.publish('Contacts', function publish() {
 });
 
 Meteor.publish('ContactsAdmin', function publish() {
-  if (this.userId) {
-    const username = Meteor.users.findOne(this.userId).username;
-    return ContactsAdmin.find({ owner: username });
+  if (this.userId && Roles.userIsInRole(this.userId, 'admin')) {
+    return Contacts.find();
   }
   return this.ready();
 });
